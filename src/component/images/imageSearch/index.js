@@ -8,7 +8,7 @@ export default function ImageSearch({ handleCurImage, handleLoadingGetImg }) {
   function getImage(searchWord) {
     handleLoadingGetImg(true)
     try {
-      const images = imageServices.getImage(e.target.value)
+      const images = imageServices.getImage(searchWord)
       handleCurImage(images)
     } catch (e) {
     } finally {
@@ -20,11 +20,12 @@ export default function ImageSearch({ handleCurImage, handleLoadingGetImg }) {
     <Wrapper>
       <searchInput
         value={curInput}
-        onChange={() => {
-          handleCurInput(value)
+        onChange={(e) => {
+          handleCurInput(e.target.value)
         }}
         onKeyDown={(e) => {
           if (e.target.value === 'Enter') {
+            getImage(e.target.value)
           }
         }}
       ></searchInput>
@@ -33,3 +34,4 @@ export default function ImageSearch({ handleCurImage, handleLoadingGetImg }) {
 }
 
 const Wrapper = styled.div``
+const searchInput = styled.input``

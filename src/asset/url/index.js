@@ -1,6 +1,9 @@
 //host url
-export function Api_host(body, query) {
-  return `http://${body}.api.river.com:${query}`
+export function Api_host(body, path, port, query) {
+  return `http://${body}.api.river.com/${path}:${port}?${query}`
+}
+export function Api_host_socket(body, path, port, query) {
+  return `ws://${body}.api.river.com/${path}:${port}?${query}`
 }
 //Login page
 export const loginUrl = '/login'
