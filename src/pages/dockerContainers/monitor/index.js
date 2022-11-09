@@ -63,7 +63,8 @@ export default function ContainerMonitor({ userId, curPage }) {
   return (
     <Wrapper>
       <ButtonContainer>
-        {/** container 삭제, */}
+        {/** 새로고침, container 삭제, work-category*/}
+        <ReloadButton></ReloadButton>
         <DeleteButton></DeleteButton>
         <WorkingCategory></WorkingCategory>
       </ButtonContainer>
@@ -81,8 +82,9 @@ const Wrapper = styled.div`
   height: 1000px;
   background-color: lightgrey;
 `
-const ButtonContainer = styled.div``
 const ButtonBox = styled.div``
+const ButtonContainer = styled.div``
+const ReloadButton = styled.button``
 const DeleteButton = styled(ButtonBox)``
 const WorkingCategory = styled.ul``
 const ContainerBox = styled.div``
