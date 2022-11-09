@@ -1,36 +1,49 @@
 import styled from 'styled-components'
+import { useState, useRef, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { IconContext } from 'react-icons'
 import { TiChevronRight } from 'react-icons/ti'
 import { HiChevronDoubleRight } from 'react-icons/hi'
 import url from '@asset/url'
 
-function parentBox(title, childList, clicked, handleClicked) {
+function ParentBox(title, childList, clickDict, handleClicked) {
   return (
     <parentWrapper>
       <parentTitle
         onClick={() => {
-          handleClicked(!clicked)
+          const curState = clickDict[title]
+          handleClicked({ ...clickDict, title: !curState })
         }}
       >
         <TiChevronRight
           style={{
-            transform: clicked ? 'rotate(90deg)' : 'rotate(0deg)',
+            transform: clickDict[title] ? 'rotate(90deg)' : 'rotate(0deg)',
             transitionDelay: '0.5s',
           }}
         />
         {title}
       </parentTitle>
-      <childNodes style={{ display: clicked ? 'block' : 'none' }}>
+      <childNodes style={{ display: clickDict[title] ? 'block' : 'none' }}>
         {childList.map((comp) => {
-          return comp
+          if (comp['state'] === 'parent') {
+            return (
+              <ParentBox
+                title={comp['title']}
+                childList={comp['childList']}
+                clickDict={clickDict}
+                handleClicked={handleClicked}
+              />
+            )
+          } else {
+            return <ChildBox title={comp['title']} link={comp['link']} />
+          }
         })}
       </childNodes>
     </parentWrapper>
   )
 }
 
-function childBox(title, link) {
+function ChildBox(title, link) {
   return (
     <childWrapper>
       <NavLink to={link} style={getLinkStyle}>
@@ -46,15 +59,49 @@ function getLinkStyle({ isActive }) {
   }
 }
 
-export default function Sidebar({ sideList }) {
+//Find all the keys in dictionary
+function findTitle(dict) {
+  const result = []
+  for (let key of Object.keys(dict)) {
+    result.push(key)
+    if ('childList' in dict[key]) {
+      dict[key]['childList'].forEach((comp) => {
+        result += findTitle(comp)
+      })
+    }
+  }
+  return result
+}
+
+/**
+ * sideList -> [{sideComp}, {sideComp}, ...]
+ * sideComp -> { state : (parent or child)}
+ * if parent : {state : parent, title : 'title', childList : [parent, child ... ] }
+ *
+ */
+export default function Sidebar({ sideDict }) {
+  const [curClicked, handleCurClicked] = useState({})
+  const titleList = useRef()
+
+  useEffect(() => {
+    const keyList = findTitle(sideDict)
+    const keyDict = {}
+    keyList.forEach((comp) => {
+      keyDict[comp] = false
+      handleCurClicked(keyDict)
+    })
+  })
+
   return (
     <BarWrapper>
-      <IconContext.Provider
-        value={{ color: 'grey', height: '190px', width: '100px' }}
-      >
+      <IconContext.Provider value={{ color: 'grey', size: '20px' }}>
         <HiChevronDoubleRight />
       </IconContext.Provider>
-      <barContainer></barContainer>
+      <BarContainer>
+        {sideDict.map((comp) => {
+          return
+        })}
+      </BarContainer>
     </BarWrapper>
   )
 }
@@ -62,9 +109,13 @@ export default function Sidebar({ sideList }) {
 const BarWrapper = styled.div`
   width: 80px;
   height: 1000px;
-  background-color: black;
+  border-right: 1px solid lightgrey;
+  background-color: white;
+  margin: 0;
+  padding-top: 20px;
   text-align: center;
 `
+const BarContainer = styled.div``
 const parentWrapper = styled.div``
 const parentTitle = styled.p`
   display: inline-block;

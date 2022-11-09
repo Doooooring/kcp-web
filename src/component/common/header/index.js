@@ -117,7 +117,7 @@ const Wrapper = styled.header`
   display: flex;
   justify-content: columns;
   align-items: center;
-  height: 80px;
+  height: 50px;
   background-color: black;
   padding-left: 33px;
 `
@@ -144,7 +144,7 @@ const CategoryName = styled.div`
   font-size: 20px;
   width: 200px;
   height: 30px;
-  padding-top: 13px;
+  padding-top: 15px;
   ul {
     color: lightgrey;
     background-color: black;

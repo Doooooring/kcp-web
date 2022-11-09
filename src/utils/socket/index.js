@@ -9,12 +9,37 @@ function ContainerSocket(containerId) {
     socketIO.on("connect", (state) => {
 
     })
-
-    socketIO.on("")
-
-   
-   
+    socketIO.on("")   
 }
+
+const initSocketConnection = (socketIO) => {
+  if (socketIO) {
+    return
+  }
+  socketIO.connect()
+}
+
+const endSocketConnection = (socketIO) => {
+  if (socketIO === null || socketIO.connected === false) {
+    return
+  }
+  socketIO.disconnect()
+  socketIO = undefined
+}
+
+  //socket Start & socket End
+  useEffect(() => {
+    initSocketConnection(socketIO)
+    socketIO.emit('getData', JSON.stringify(containerEP))
+    return endSocketConnection(socketIO)
+  }, [curPage])
+
+  //get state continually
+  useEffect(() => {
+    socketIO.on('getState', (state) => {
+      handleCurState(JSON.parse(state.data))
+    })
+  }, [])
 
 
 export default ContainerSocket*/

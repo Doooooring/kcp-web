@@ -15,7 +15,6 @@ export default function ImageSearch({ handleCurImage, handleLoadingGetImg }) {
       handleLoadingGetImg(false)
     }
   }
-
   return (
     <Wrapper>
       <searchInput

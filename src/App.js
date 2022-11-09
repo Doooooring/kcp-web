@@ -2,6 +2,7 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState } from 'react'
 
+import DefaultPage from '@component/common/default'
 import RootPage from '@pages'
 import LoginPage from '@pages/login'
 import ImageBuilder from '@pages/dockerImages/builder'
@@ -18,28 +19,31 @@ function App() {
   return (
     <Router>
       <Header curPage={curPage} handleCurPage={handleCurPage} />
-      <Sidebar curPage={curPage} />
+      <Sidebar curPage={curPage} sideDict={[]} />
       <Routes>
         <Route path="login" element={<LoginPage />}></Route>
         <Route exact path="/" element={<RootPage />}>
-          <Route path="contents">
-            <Route path="image">
-              <Route path="build" element={<ImageBuilder />} />
-              <Route path="monitor" element={<ImageMonitor />}>
-                <Route path="view-details" element={<ViewImageDetails />} />
-              </Route>
-            </Route>
-            <Route path="container">
-              <Route path="handle" element={<ContainerHandler />}></Route>
-              <Route path="monitor" element={<ContainerMonitor />}>
-                <Route
-                  path="detail:containerId"
-                  element={<ContainerDetail curPage={curPage} />}
-                ></Route>
-              </Route>
-              <Route></Route>
-            </Route>
-          </Route>
+          <Route exact path="contents" element={<DefaultPage />} />
+          <Route path="contents/image" element={<DefaultPage />} />
+          <Route path="contents/build" element={<ImageBuilder />} />
+          <Route path="contents/monitor" element={<ImageMonitor />} />
+          <Route
+            path="contents/monitor/view-details"
+            element={<ViewImageDetails />}
+          />
+          <Route path="contents/container" element={<DefaultPage />} />
+          <Route
+            path="contents/container/handle"
+            element={<ContainerHandler />}
+          />
+          <Route
+            path="contents/container/monitor"
+            element={<ContainerMonitor curpage={curPage} />}
+          />
+          <Route
+            path="contents/container/monitor/detail:containerId"
+            element={<ContainerDetail curPage={curPage} />}
+          />
         </Route>
       </Routes>
     </Router>
