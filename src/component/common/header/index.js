@@ -119,10 +119,11 @@ const Wrapper = styled.header`
   align-items: center;
   height: 50px;
   background-color: black;
-  padding-left: 33px;
+  padding-left: 10px;
+  z-index: 3;
 `
 const ImageWrapper = styled.div`
-  margin-right: 30px;
+  margin-right: 10px;
 `
 
 const Category = styled.div`
@@ -139,12 +140,14 @@ const NavWrapper = styled.li`
 const Navigation = styled(NavLink)``
 
 const CategoryName = styled.div`
+  position: relative;
   display: inline-block;
   color: lightgrey;
   font-size: 20px;
   width: 200px;
   height: 30px;
   padding-top: 15px;
+  z-index: 3;
   ul {
     color: lightgrey;
     background-color: black;
@@ -173,9 +176,9 @@ const CategoryName = styled.div`
 `
 const ImageCategoryName = styled(CategoryName)`
   font-weight: ${({ $curClicked }) =>
-    $curClicked === 'image' ? '500' : '900'};
+    $curClicked === 'image' ? '500' : '700'};
 `
 const ContainerCategoryName = styled(CategoryName)`
   font-weight: ${({ $curClicked }) =>
-    $curClicked === 'container' ? '500' : '900'};
+    $curClicked === 'container' ? '500' : '700'};
 `

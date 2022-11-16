@@ -19,7 +19,6 @@ function App() {
   return (
     <Router>
       <Header curPage={curPage} handleCurPage={handleCurPage} />
-      <Sidebar curPage={curPage} sideDict={[]} />
       <Routes>
         <Route path="login" element={<LoginPage />}></Route>
         <Route exact path="/" element={<RootPage />}>

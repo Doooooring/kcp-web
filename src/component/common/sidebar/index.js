@@ -77,9 +77,9 @@ function findTitle(dict) {
  * sideList -> [{sideComp}, {sideComp}, ...]
  * sideComp -> { state : (parent or child)}
  * if parent : {state : parent, title : 'title', childList : [parent, child ... ] }
- *
+ * if child : {state : child, title : 'title', link : ''}
  */
-export default function Sidebar({ sideDict }) {
+export default function Sidebar({ sideDict, sideOpened, setSideOpened }) {
   const [curClicked, handleCurClicked] = useState({})
   const titleList = useRef()
 
@@ -90,13 +90,30 @@ export default function Sidebar({ sideDict }) {
       keyDict[comp] = false
       handleCurClicked(keyDict)
     })
-  })
+  }, [])
 
   return (
-    <BarWrapper>
-      <IconContext.Provider value={{ color: 'grey', size: '20px' }}>
-        <HiChevronDoubleRight />
-      </IconContext.Provider>
+    <BarWrapper
+      style={{ width: sideOpened ? '15%' : '3%', transitionDuration: '0.5s' }}
+      onClick={() => {
+        setSideOpened(!sideOpened)
+      }}
+    >
+      <ImageWrapper
+        style={{
+          transitionDuration: '0.5s',
+          transform: sideOpened ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        }}
+      >
+        <IconContext.Provider
+          value={{
+            color: 'grey',
+            size: '20px',
+          }}
+        >
+          <HiChevronDoubleRight />
+        </IconContext.Provider>
+      </ImageWrapper>
       <BarContainer>
         {sideDict.map((comp) => {
           return
@@ -107,14 +124,26 @@ export default function Sidebar({ sideDict }) {
 }
 
 const BarWrapper = styled.div`
-  width: 80px;
+  display: inline-block;
+  position: fixed;
+  left: 0;
+  top: 50px;
   height: 1000px;
   border-right: 1px solid lightgrey;
   background-color: white;
   margin: 0;
   padding-top: 20px;
-  text-align: center;
+  z-index: 2;
 `
+const ImageWrapper = styled.div`
+  position: absolute;
+  right: 10px;
+  display: inline-block;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 const BarContainer = styled.div``
 const parentWrapper = styled.div``
 const parentTitle = styled.p`
