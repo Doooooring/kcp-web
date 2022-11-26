@@ -4,10 +4,13 @@ class ContainerServices {
   constructor() {
     this.containerRepository = new containerRepository()
   }
-  async getContainer(userId) {
-    const containers = await this.containerRepository.getContainer(userId)
+  async getContainer(userId, filterCheck) {
+    const containers = await this.containerRepository.getContainer(
+      userId,
+      filterCheck,
+    )
     return containers
   }
 }
 
-export default ContainerServices
+export const containerServices = new ContainerServices()

@@ -16,6 +16,24 @@ class ImageServices {
     const details = await this.imageRepository.getDetails(imageId)
     return details
   }
+
+  /** delete repository */
+  async deleteRepositories(setCurRepositories, repositoriesToDelete) {
+    const strForParam = repositoriesToDelete.reduce((acc, cur) => {
+      acc += `${cur},`
+      return acc
+    }, '')
+    const newRepoList = await this.imageRepository.deleteRepositories(
+      strForParam,
+    )
+    setCurRepositories(newRepoList)
+  }
+
+  /** Add repository */
+  async addRepository(setCurRepositories, repoInfo) {
+    const newRepoList = await this.imageRepository.addRepository(repoInfo)
+    setCurRepositories(newRepoList)
+  }
 }
 
 export default new ImageServices()

@@ -1,14 +1,13 @@
 import styled from 'styled-components'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SpeechBubble } from '@component/common/figure'
-import { AiOutlineHolder } from 'react-icons/ai'
+import { AiOutlineDatabase } from 'react-icons/ai'
 
-export default function getContainerDetail({ containerId }) {
+export default function MoveToRepo({ repositoryName }) {
   return (
     <Wrapper>
-      <Link to={`/contents/container/monitor/detail:${containerId}`}>
-        <AiOutlineHolder
+      <Link to={`/contents/image/monitor/repository:${repositoryName}`}>
+        <AiOutlineDatabase
           style={{
             position: 'relative',
             size: '20px',
@@ -21,7 +20,7 @@ export default function getContainerDetail({ containerId }) {
           height="40px"
           width="180px"
           color="rgb(230, 230, 230)"
-          component={'Move on Detail page'}
+          component={'Move on repository'}
         />
       </BubbleWrapper>
     </Wrapper>

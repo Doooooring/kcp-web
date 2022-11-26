@@ -1,34 +1,33 @@
 import styled from 'styled-components'
-import containerServices from '@services/containerServices'
 import Header from '@component/common/header'
 import Sidebar from '@component/common/sidebar'
-import ContainerBlock from '@component/containers/containerBlock'
-import ContainerTable from '@component/common/table'
+import ContainerTable from '@component/containers/table'
+import LoadingPage from '@component/common/loading'
+
+import { containerServices } from '@services/containerServices'
+import { containerData, containerColumns } from '@asset/examples'
 import { useState, useMemo, useEffect, useRef, useTransition } from 'react'
-import ContainerServices from '@services/containerServices'
 import { IconContext } from 'react-icons'
-import { BiRotateRight } from 'react-icons/bi'
-import { BiSearchAlt2 } from 'react-icons/bi'
+import { BiRotateRight, BiSearchAlt2, BiTrash, BiPause } from 'react-icons/bi'
 
 //get container list by containerService
 async function getContainers(
   userId,
+  filterCheck,
   setCurContainers,
   setNumOfContainers,
   setLoadingToGetCont,
   setErrorToGetCont,
 ) {
-  {
-    try {
-      setLoadingToGetCont(true)
-      const response = await containerServices.getContainer(userId)
-      setCurContainers(response)
-      setNumOfContainers(response.length)
-    } catch (e) {
-      setErrorToGetCont(e)
-    } finally {
-      setLoadingToGetCont(false)
-    }
+  try {
+    setLoadingToGetCont(true)
+    const response = await containerServices.getContainer(userId, filterCheck)
+    setCurContainers(response)
+    setNumOfContainers(response.length)
+  } catch (e) {
+    setErrorToGetCont(e)
+  } finally {
+    setLoadingToGetCont(false)
   }
 }
 
@@ -53,7 +52,7 @@ async function deleteContainer(
 export default function ContainerMonitor({ userId, curPage }) {
   const [curContainers, setCurContainers] = useState([])
   const [numOfContainers, setNumOfContainers] = useState(0)
-  const [loadingTogetCont, setLoadingToGetCont] = useState(false)
+  const [loadingToGetCont, setLoadingToGetCont] = useState(false)
   const [errorToGetCont, setErrorToGetCont] = useState(null)
   const [headerContents, setHeaderContents] = useState({
     lastRefresh: '5 minutes ago',
@@ -61,77 +60,25 @@ export default function ContainerMonitor({ userId, curPage }) {
     useMemory: '0',
   })
   const [searchWord, setSearchWord] = useState('')
-  const [filterCheck, setFilterCheck] = useState([false, false])
+  const [filterCheck, setFilterCheck] = useState('all')
+  const [curChecked, setCurChecked] = useState(false)
+  const [containersToDelete, setContainersToDelete] = useState([])
 
-  const data = useMemo(
-    () => [
-      {
-        containerId: '1234',
-        URI: 'yscec.yonsei.ac.kr',
-        date: '2022.02.20',
-        status: 'good',
-      },
-      {
-        containerId: '12345',
-        URI: 'yscec.yonsei.ac.kr',
-        date: '2022.02.20',
-        status: 'good',
-      },
-      {
-        containerId: '12346',
-        URI: 'yscec.yonsei.ac.kr',
-        date: '2022.02.20',
-        status: 'good',
-      },
-      {
-        containerId: '12347',
-        URI: 'yscec.yonsei.ac.kr',
-        date: '2022.02.20',
-        status: 'good',
-      },
-      {
-        containerId: '12348',
-        URI: 'yscec.yonsei.ac.kr',
-        date: '2022.02.20',
-        status: 'good',
-      },
-    ],
-    [],
-  )
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'containerId',
-        accessor: 'containerId',
-        width: 100,
-      },
-      {
-        Header: 'URI',
-        accessor: 'URI',
-      },
-      {
-        Header: 'date',
-        accessor: 'date',
-      },
-      {
-        Header: 'status',
-        accessor: 'status',
-      },
-    ],
-    [],
-  )
   //get container list
   /** 
   useEffect(() => {
     getContainers(
       userId,
+      filterCheck
       setCurContainers,
       setLoadingToGetCont,
       setErrorToGetCont,
     )
+  }, [filterCheck])*/
+  /*
+  useEffect(() => {
+    setLoadingToGetCont(true)
   }, [])*/
-
   return (
     <Wrapper>
       <ContentsContainer>
@@ -176,49 +123,88 @@ export default function ContainerMonitor({ userId, curPage }) {
             <FilterBox>
               filter
               <ul>
-                <StatusAlive>
-                  <AliveStatusCheck
-                    type="checkbox"
-                    checked={filterCheck[0]}
+                <Status>
+                  <StatusCheck
+                    type="radio"
+                    checked={filterCheck === 'all'}
                     onClick={() => {
-                      if (!filterCheck[0] && filterCheck[1]) {
-                        setFilterCheck([false, false])
-                      } else {
-                        setFilterCheck([!filterCheck[0], filterCheck[1]])
-                      }
+                      setFilterCheck('all')
+                    }}
+                  />
+                  All
+                </Status>
+                <Status>
+                  <StatusCheck
+                    type="radio"
+                    checked={filterCheck === 'alive'}
+                    onClick={() => {
+                      setFilterCheck('alive')
                     }}
                   />
                   Alive
-                </StatusAlive>
-                <StatusDead>
-                  <DeadStatusCheck
-                    type="checkbox"
-                    checked={filterCheck[1]}
+                </Status>
+                <Status>
+                  <StatusCheck
+                    type="radio"
+                    checked={filterCheck === 'dead'}
                     onClick={() => {
-                      if (filterCheck[0] && !filterCheck[1]) {
-                        setFilterCheck([false, false])
-                      } else {
-                        setFilterCheck([filterCheck[0], !filterCheck[1]])
-                      }
+                      setFilterCheck('dead')
                     }}
                   />
                   Dead
-                </StatusDead>
+                </Status>
               </ul>
             </FilterBox>
             <WorkBox>
               Work
               <ul>
-                <DeleteButton>Delete</DeleteButton>
-                <PauseButton>Pause</PauseButton>
+                <DeleteButton
+                  onClick={() => {
+                    deleteContainer(
+                      containersToDelete,
+                      setCurContainers,
+                      setLoadingToGetCont,
+                      setErrorToGetCont,
+                    )
+                  }}
+                >
+                  <BiTrash
+                    style={{
+                      marginRight: '5px',
+                      fontSize: '20px',
+                    }}
+                  />
+                  <span>Delete</span>
+                </DeleteButton>
+                <PauseButton>
+                  <BiPause
+                    style={{
+                      marginRight: '5px',
+                      fontSize: '20px',
+                    }}
+                  />
+                  <span>Pause</span>
+                </PauseButton>
               </ul>
             </WorkBox>
           </ButtonContainer>
           <MainContainer>
             {/**{curContainers.map((comp) => {
               return <ContainerBlock comp={comp} />
-            })}*/}
-            <ContainerTable columns={columns} data={data} />
+            })}*/}{' '}
+            {loadingToGetCont ? (
+              <LoadingPage />
+            ) : (
+              <ContainerTable
+                columns={containerColumns}
+                data={containerData}
+                curChecked={curChecked}
+                setCurChecked={setCurChecked}
+                containersToDelete={containersToDelete}
+                setContainersToDelete={setContainersToDelete}
+                loadingToGetCont={loadingToGetCont}
+              />
+            )}
           </MainContainer>
         </WorkContainer>
       </ContentsContainer>
@@ -292,6 +278,7 @@ const SearchBox = styled.div`
   height: 35px;
   align-items: center;
   border: 1px solid lightgrey;
+  padding-left: 10px;
 `
 
 const InputBox = styled.input`
@@ -323,21 +310,24 @@ const categoryBox = styled.div`
   text-align: center;
   font-size: 15px;
   font-weight: 700;
-  width: 70px;
+  width: 100px;
   height: 35px;
 `
 
 const FilterBox = styled(categoryBox)`
   ul {
     position: relative;
+    top: 12px;
     z-index: 4;
+    width: 200%;
     background-color: white;
+    border: 0;
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.3);
     color: grey;
-    text-align: left;
-    padding: 5px;
+    text-align: center;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.5s;
+    transition: all 0.3s;
   }
   &:hover ul {
     opacity: 1;
@@ -349,33 +339,40 @@ const FilterBox = styled(categoryBox)`
     cursor: pointer;
   }
 `
-const StatusCheck = () => {
-  return (
-    <input type="checkbox" style={{ height: '20px', width: '20px' }}></input>
-  )
-}
+const StatusCheck = styled.input`
+  height: 10px;
+  width: 10px;
+  margin-right: 10px;
+`
 
-const StatusAlive = styled.div``
-const AliveStatusCheck = styled.input``
-const StatusDead = styled.div``
-const DeadStatusCheck = styled.input``
+const Status = styled.li`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 35px;
+  &:hover {
+    background-color: rgb(200, 200, 200);
+  }
+`
 
 // container 대상 작업 들어갈 공간(아직 미정)
 const WorkBox = styled(categoryBox)`
   ul {
     position: relative;
-    top: 15px;
-    left: 10px;
+    top: 12px;
     z-index: 4;
-    width: 100px;
+    width: 200%;
     background-color: white;
-    border: 1px solid lightgrey;
+    border: 0;
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.3);
     color: grey;
-    text-align: left;
-    padding: 5px;
+    text-align: center;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.5s;
+    transition: all 0.3s;
   }
   &:hover ul {
     opacity: 1;
@@ -387,8 +384,20 @@ const WorkBox = styled(categoryBox)`
     cursor: pointer;
   }
 `
-const DeleteButton = styled.button``
-const PauseButton = styled.button``
+const workButton = styled.li`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 35px;
+  &:hover {
+    background-color: rgb(200, 200, 200);
+  }
+`
+const DeleteButton = styled(workButton)``
+const PauseButton = styled(workButton)``
 
 const MainContainer = styled.table`
   //border: 1px solid lightgrey;

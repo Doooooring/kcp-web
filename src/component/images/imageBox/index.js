@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import viewImageDetails from '@pages/dockerImages/monitor/viewImageDetails'
-export default function ImageBox(name, tag, id, status) {
+export default function ImageBox({name, tag, id, status}) {
   return (
     <Wrapper>
       <Name>{name}</Name>

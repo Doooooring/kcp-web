@@ -50,22 +50,22 @@ function Header(props) {
           <Categories>
             <NavWrapper>
               <Navigation
-                to="/contents/image/build"
+                to="/contents/image/repository"
                 onClick={() => {
-                  handlecurPage('imBuilder')
+                  handlecurPage('imRepository')
                 }}
               >
-                Build
+                repository
               </Navigation>
             </NavWrapper>
             <NavWrapper>
               <Navigation
-                to="/contents/image/monitor"
+                to="/contents/image/repository"
                 onClick={() => {
-                  handlecurPage('imMonitor')
+                  handlecurPage('imRepository')
                 }}
               >
-                Monitor
+                um..
               </Navigation>
             </NavWrapper>
           </Categories>
@@ -123,6 +123,7 @@ const Wrapper = styled.header`
   z-index: 3;
 `
 const ImageWrapper = styled.div`
+  margin-left: 10px;
   margin-right: 10px;
 `
 
