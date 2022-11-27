@@ -1,18 +1,18 @@
-import styled from 'styled-components'
-import imageServices from '@services/imageServices'
-import { useState } from 'react'
+import styled from "styled-components";
+import imageServices from "@services/imageServices";
+import { useState } from "react";
 
 export default function ImageSearch({ handleCurImage, handleLoadingGetImg }) {
-  const [curInput, handleCurInput] = useState('')
+  const [curInput, handleCurInput] = useState("");
 
   function getImage(searchWord) {
-    handleLoadingGetImg(true)
+    handleLoadingGetImg(true);
     try {
-      const images = imageServices.getImage(searchWord)
-      handleCurImage(images)
+      const images = imageServices.getImage(searchWord);
+      handleCurImage(images);
     } catch (e) {
     } finally {
-      handleLoadingGetImg(false)
+      handleLoadingGetImg(false);
     }
   }
   return (
@@ -20,17 +20,20 @@ export default function ImageSearch({ handleCurImage, handleLoadingGetImg }) {
       <searchInput
         value={curInput}
         onChange={(e) => {
-          handleCurInput(e.target.value)
+          handleCurInput(e.target.value);
         }}
         onKeyDown={(e) => {
-          if (e.target.value === 'Enter') {
-            getImage(e.target.value)
+          if (e.target.value === "Enter") {
+            getImage(e.target.value);
           }
         }}
+        placeholder="#search Image Name,Id"
       ></searchInput>
     </Wrapper>
-  )
+  );
 }
 
-const Wrapper = styled.div``
-const searchInput = styled.input``
+const Wrapper = styled.div``;
+const searchInput = styled.input`
+  color: rgb(200, 200, 200);
+`;

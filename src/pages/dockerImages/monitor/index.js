@@ -1,36 +1,55 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-import ImageBox from '@component/images/imageBox'
-import ImageSearch from '@component/images/imageSearch'
-import ImageServices from '@services/imageServices'
-import { useEffect, useState } from 'react'
-import HowToPush from '@component/images/repository/howtopush'
-import Modal from '@component/images/modal'
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
-export default function Moniter() {
-  const [curImg, handleCurImg] = useState([])
-  const [modalUp, setModalUp] = useState(false)
+import { ImageColumns, ImageData } from "@asset/examples";
+import HowToPush from "@component/images/repository/howToPush";
+import Modal from "@component/images/modal";
+import Table from "@component/images/table";
+import ImageBox from "@component/images/imageBox";
+import ImageSearch from "@component/images/imageSearch";
+import ImageServices from "@services/imageServices";
+import { consoleAsync } from "@asset/hooks";
+
+export default function Moniter({ userId }) {
+  const { repositoryName } = useParams();
+  const [curImg, setCurImg] = useState([]);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+  const [modalUp, setModalUp] = useState(false);
   /*useEffect(() => {
     const defaultImages = imageServices.getImages()
     handleCurImg(defaultImages)
   }, [])*/
 
+  consoleAsync(repositoryName);
+  consoleAsync(userId);
+
   return (
     <Wrapper>
       <ContentHead>
-        <ImageSearch handleCurImg={handleCurImg} />
-        <HowToPush modalUp={modalUp} />
+        <ImageSearch handleCurImg={setCurImg} />
+        <HowToPush setModalUp={setModalUp} />
       </ContentHead>
       <ContentMain>
-        {curImg.map((comp) => {
-          return <ImageBox comp={comp} />
-        })}
+        {
+          <Table
+            columns={ImageColumns}
+            data={ImageData}
+            setImagesToDelete={setImagesToDelete}
+          />
+        }
       </ContentMain>
-      <Modal modalUp={modalUp} setModalUp={setModalUp} />
+      <Modal
+        modalUp={modalUp}
+        setModalUp={setModalUp}
+        userId={userId}
+        repositoryName={repositoryName}
+      />
     </Wrapper>
-  )
+  );
 }
 
-const Wrapper = styled.div``
-const ContentHead = styled.div``
-const ContentMain = styled.div``
+const Wrapper = styled.div``;
+const ContentHead = styled.div``;
+const ContentMain = styled.div``;

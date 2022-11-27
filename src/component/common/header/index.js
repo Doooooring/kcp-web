@@ -1,24 +1,24 @@
-import styled from 'styled-components'
-import Login from '@pages/'
-import { Link, NavLink } from 'react-router-dom'
-import { useRef, useState } from 'react'
-import { IconContext } from 'react-icons'
-import { RiHome5Line } from 'react-icons/ri'
-import { TiChevronRight } from 'react-icons/ti'
+import styled from "styled-components";
+import Login from "@pages/";
+import { Link, NavLink } from "react-router-dom";
+import { useRef, useState } from "react";
+import { IconContext } from "react-icons";
+import { RiHome5Line } from "react-icons/ri";
+import { TiChevronRight } from "react-icons/ti";
 
 function Header(props) {
-  const { curPage, handlecurPage } = props
-  const [curClicked, handleCurClicked] = useState('')
-  const imageCategories = useRef(['imBuilder', 'imMonitor'])
-  const containerCategories = useRef([])
+  const { curPage, handlecurPage } = props;
+  const [curClicked, handleCurClicked] = useState("");
+  const imageCategories = useRef(["imBuilder", "imMonitor"]);
+  const containerCategories = useRef([]);
   return (
     <Wrapper>
       <ImageWrapper>
         <IconContext.Provider
           value={{
-            color: 'white',
-            height: '190px',
-            width: '100px',
+            color: "white",
+            height: "190px",
+            width: "100px",
           }}
         >
           <RiHome5Line />
@@ -27,10 +27,10 @@ function Header(props) {
       <Category>
         <ImageCategoryName
           onClick={() => {
-            if (curClicked === 'images') {
-              handleCurClicked('')
+            if (curClicked === "images") {
+              handleCurClicked("");
             } else {
-              handleCurClicked('images')
+              handleCurClicked("images");
             }
           }}
         >
@@ -52,7 +52,7 @@ function Header(props) {
               <Navigation
                 to="/contents/image/repository"
                 onClick={() => {
-                  handlecurPage('imRepository')
+                  handlecurPage("imRepository");
                 }}
               >
                 repository
@@ -62,7 +62,7 @@ function Header(props) {
               <Navigation
                 to="/contents/image/repository"
                 onClick={() => {
-                  handlecurPage('imRepository')
+                  handlecurPage("imRepository");
                 }}
               >
                 um..
@@ -75,10 +75,10 @@ function Header(props) {
       <Category>
         <ContainerCategoryName
           onClick={() => {
-            if (curClicked === 'container') {
-              handleCurClicked('')
+            if (curClicked === "container") {
+              handleCurClicked("");
             } else {
-              handleCurClicked('container')
+              handleCurClicked("container");
             }
           }}
         >
@@ -88,7 +88,7 @@ function Header(props) {
               <Navigation
                 to="/contents/container/handle"
                 onClick={() => {
-                  handlecurPage('conHandler')
+                  handlecurPage("conHandler");
                 }}
               >
                 Build
@@ -98,7 +98,7 @@ function Header(props) {
               <Navigation
                 to="/contents/container/monitor"
                 onClick={() => {
-                  handlecurPage('conMonitor')
+                  handlecurPage("conMonitor");
                 }}
               >
                 Monitor
@@ -108,10 +108,10 @@ function Header(props) {
         </ContainerCategoryName>
       </Category>
     </Wrapper>
-  )
+  );
 }
 
-export default Header
+export default Header;
 
 const Wrapper = styled.header`
   display: flex;
@@ -121,24 +121,24 @@ const Wrapper = styled.header`
   background-color: black;
   padding-left: 10px;
   z-index: 3;
-`
+`;
 const ImageWrapper = styled.div`
   margin-left: 10px;
   margin-right: 10px;
-`
+`;
 
 const Category = styled.div`
   display: inline-block;
   height: 50px;
   text-align: center;
-`
-const Categories = styled.ul``
+`;
+const Categories = styled.ul``;
 
 const NavWrapper = styled.li`
   padding: 5px;
-`
+`;
 
-const Navigation = styled(NavLink)``
+const Navigation = styled(NavLink)``;
 
 const CategoryName = styled.div`
   position: relative;
@@ -148,7 +148,7 @@ const CategoryName = styled.div`
   width: 200px;
   height: 30px;
   padding-top: 15px;
-  z-index: 3;
+  z-index: 99;
   ul {
     color: lightgrey;
     background-color: black;
@@ -174,12 +174,12 @@ const CategoryName = styled.div`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 const ImageCategoryName = styled(CategoryName)`
   font-weight: ${({ $curClicked }) =>
-    $curClicked === 'image' ? '500' : '700'};
-`
+    $curClicked === "image" ? "500" : "700"};
+`;
 const ContainerCategoryName = styled(CategoryName)`
   font-weight: ${({ $curClicked }) =>
-    $curClicked === 'container' ? '500' : '700'};
-`
+    $curClicked === "container" ? "500" : "700"};
+`;

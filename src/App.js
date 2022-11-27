@@ -1,23 +1,23 @@
-import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { useState } from 'react'
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
-import DefaultPage from '@component/common/default'
-import RootPage from '@pages'
-import LoginPage from '@pages/login'
-import ImageRepository from '@pages/dockerImages/repository'
-import BuildRepository from '@pages/dockerImages/build'
-import ImageMonitor from '@pages/dockerImages/monitor'
-import ViewImageDetails from '@pages/dockerImages/monitor/viewImageDetails'
-import ContainerHandler from '@pages/dockerContainers/handler'
-import ContainerMonitor from '@pages/dockerContainers/monitor'
-import ContainerDetail from '@pages/dockerContainers/monitor/detail'
-import Header from '@component/common/header'
-import Sidebar from '@component/common/sidebar'
+import DefaultPage from "@component/common/default";
+import RootPage from "@pages";
+import LoginPage from "@pages/login";
+import ImageRepository from "@pages/dockerImages/repository";
+import BuildRepository from "@pages/dockerImages/build";
+import ImageMonitor from "@pages/dockerImages/monitor";
+import ViewImageDetails from "@pages/dockerImages/monitor/viewImageDetails";
+import ContainerHandler from "@pages/dockerContainers/handler";
+import ContainerMonitor from "@pages/dockerContainers/monitor";
+import ContainerDetail from "@pages/dockerContainers/monitor/detail";
+import Header from "@component/common/header";
+import Sidebar from "@component/common/sidebar";
 
 function App() {
-  const [curPage, handleCurPage] = useState('')
-  const [userId, setUserId] = useState('doridori')
+  const [curPage, handleCurPage] = useState("");
+  const [userId, setUserId] = useState("doridori");
   return (
     <Router>
       <Header curPage={curPage} handleCurPage={handleCurPage} />
@@ -41,7 +41,7 @@ function App() {
           />
           <Route
             path="contents/image/monitor/repository:repositoryName"
-            element={<ImageMonitor />}
+            element={<ImageMonitor userId={userId} />}
           />
           <Route
             path="contents/image/monitor/view-details"
@@ -63,7 +63,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

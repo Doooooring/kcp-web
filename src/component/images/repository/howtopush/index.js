@@ -1,15 +1,15 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export default function HowToPush({ setModalUp }) {
   return (
     <Wrapper
       onClick={() => {
-        setModalUp(true)
+        setModalUp(true);
       }}
     >
       how to push
     </Wrapper>
-  )
+  );
 }
 
-const Wrapper = styled.button``
+const Wrapper = styled.button``;
