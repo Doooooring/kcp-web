@@ -1,39 +1,31 @@
-import imageRepository from '@repositories/imageRepository'
+import imageRepository from "@repositories/imageRepository";
+
+import { HOST_DAEMON } from "@asset/url";
 
 class ImageServices {
   constructor() {
-    this.imageRepository = new imageRepository()
+    this.imageRepository = new imageRepository();
+  }
+
+  async getAllImages(searchKey = "") {
+    const images = await this.imageRepository.getImages("", searchKey);
+    return images;
   }
 
   /** Get images by searchKey */
-  async getImages(searchKey = '') {
-    const images = await this.imageRepository.getImages(searchKey)
-    return images
+  async getImages(repoName, searchKey = "") {
+    const images = await this.imageRepository.getImages(
+      `${HOST_DAEMON}/${repoName}`,
+      searchKey
+    );
+    return images;
   }
 
   /** Get image details {Name, Tag, ID, Status} */
   async getDetails(imageId) {
-    const details = await this.imageRepository.getDetails(imageId)
-    return details
-  }
-
-  /** delete repository */
-  async deleteRepositories(setCurRepositories, repositoriesToDelete) {
-    const strForParam = repositoriesToDelete.reduce((acc, cur) => {
-      acc += `${cur},`
-      return acc
-    }, '')
-    const newRepoList = await this.imageRepository.deleteRepositories(
-      strForParam,
-    )
-    setCurRepositories(newRepoList)
-  }
-
-  /** Add repository */
-  async addRepository(setCurRepositories, repoInfo) {
-    const newRepoList = await this.imageRepository.addRepository(repoInfo)
-    setCurRepositories(newRepoList)
+    const details = await this.imageRepository.getDetails(imageId);
+    return details;
   }
 }
 
-export default new ImageServices()
+export default new ImageServices();

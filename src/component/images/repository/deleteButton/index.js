@@ -1,25 +1,19 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-import imageServices from '@services/imageServices'
+import imageServices from "@services/imageServices";
 
-import { BiTrash } from 'react-icons/bi'
+import { BiTrash } from "react-icons/bi";
 
-export default function DeleteButton({
-  setCurRepositories,
-  repositoriesToDelete,
-}) {
+export default function DeleteButton({ setCurRepositories, selectedRepo }) {
   return (
     <Wrapper
       onClick={() => {
-        imageServices.deleteRepositories(
-          setCurRepositories,
-          repositoriesToDelete,
-        )
+        imageServices.deleteRepositories(setCurRepositories, selectedRepo);
       }}
     >
       <BiTrash />
     </Wrapper>
-  )
+  );
 }
 
-const Wrapper = styled.button``
+const Wrapper = styled.button``;

@@ -1,14 +1,14 @@
-import styled from 'styled-components'
-import Header from '@component/common/header'
-import Sidebar from '@component/common/sidebar'
-import ContainerTable from '@component/containers/table'
-import LoadingPage from '@component/common/loading'
+import styled from "styled-components";
+import Header from "@component/common/header";
+import Sidebar from "@component/common/sidebar";
+import ContainerTable from "@component/containers/table";
+import LoadingPage from "@component/common/loading";
 
-import { containerServices } from '@services/containerServices'
-import { containerData, containerColumns } from '@asset/examples'
-import { useState, useMemo, useEffect, useRef, useTransition } from 'react'
-import { IconContext } from 'react-icons'
-import { BiRotateRight, BiSearchAlt2, BiTrash, BiPause } from 'react-icons/bi'
+import { containerServices } from "@services/containerServices";
+import { containerData, containerColumns } from "@asset/examples";
+import { useState, useMemo, useEffect, useRef, useTransition } from "react";
+import { IconContext } from "react-icons";
+import { BiRotateRight, BiSearchAlt2, BiTrash, BiPause } from "react-icons/bi";
 
 //get container list by containerService
 async function getContainers(
@@ -17,17 +17,17 @@ async function getContainers(
   setCurContainers,
   setNumOfContainers,
   setLoadingToGetCont,
-  setErrorToGetCont,
+  setErrorToGetCont
 ) {
   try {
-    setLoadingToGetCont(true)
-    const response = await containerServices.getContainer(userId, filterCheck)
-    setCurContainers(response)
-    setNumOfContainers(response.length)
+    setLoadingToGetCont(true);
+    const response = await containerServices.getContainer(userId, filterCheck);
+    setCurContainers(response);
+    setNumOfContainers(response.length);
   } catch (e) {
-    setErrorToGetCont(e)
+    setErrorToGetCont(e);
   } finally {
-    setLoadingToGetCont(false)
+    setLoadingToGetCont(false);
   }
 }
 
@@ -35,34 +35,34 @@ async function deleteContainer(
   containerId,
   setCurContainers,
   setLoadingToGetCont,
-  setErrorToGetCont,
+  setErrorToGetCont
 ) {
   try {
-    setLoadingToGetCont(true)
-    const response = await containerServices.deleteContainer(containerId)
-    setCurContainers(response)
+    setLoadingToGetCont(true);
+    const response = await containerServices.deleteContainer(containerId);
+    setCurContainers(response);
   } catch (e) {
-    setErrorToGetCont(e)
+    setErrorToGetCont(e);
   } finally {
-    setLoadingToGetCont(false)
+    setLoadingToGetCont(false);
   }
 }
 
 // main componentn for monitoring page
 export default function ContainerMonitor({ userId, curPage }) {
-  const [curContainers, setCurContainers] = useState([])
-  const [numOfContainers, setNumOfContainers] = useState(0)
-  const [loadingToGetCont, setLoadingToGetCont] = useState(false)
-  const [errorToGetCont, setErrorToGetCont] = useState(null)
+  const [curContainers, setCurContainers] = useState([]);
+  const [numOfContainers, setNumOfContainers] = useState(0);
+  const [loadingToGetCont, setLoadingToGetCont] = useState(false);
+  const [errorToGetCont, setErrorToGetCont] = useState(null);
   const [headerContents, setHeaderContents] = useState({
-    lastRefresh: '5 minutes ago',
-    totalSize: '1000',
-    useMemory: '0',
-  })
-  const [searchWord, setSearchWord] = useState('')
-  const [filterCheck, setFilterCheck] = useState('all')
-  const [curChecked, setCurChecked] = useState(false)
-  const [containersToDelete, setContainersToDelete] = useState([])
+    lastRefresh: "5 minutes ago",
+    totalSize: "1000",
+    useMemory: "0",
+  });
+  const [searchWord, setSearchWord] = useState("");
+  const [filterCheck, setFilterCheck] = useState("all");
+  const [curChecked, setCurChecked] = useState(false);
+  const [containersToDelete, setContainersToDelete] = useState([]);
 
   //get container list
   /** 
@@ -83,22 +83,22 @@ export default function ContainerMonitor({ userId, curPage }) {
     <Wrapper>
       <ContentsContainer>
         <ContentHead>
-          <CurrentSide>{'Container Repository'}</CurrentSide>
+          <CurrentSide>{"Container Repository"}</CurrentSide>
           <RightWrapper>
             <ReloadButton>
               <IconContext.Provider
                 value={{
-                  size: '25px',
+                  size: "25px",
                 }}
               >
                 <BiRotateRight />
               </IconContext.Provider>
             </ReloadButton>
             <LastRefresh>
-              {'Last refresh :' + ` ${headerContents['lastRefresh']}`}
+              {"Last refresh :" + ` ${headerContents["lastRefresh"]}`}
             </LastRefresh>
-            <TotalSize>{`${headerContents['totalSize']}MB total size`}</TotalSize>
-            <TotalMemory>{`${headerContents['useMemory']}MB / ${headerContents['totalSize']}MB in use`}</TotalMemory>
+            <TotalSize>{`${headerContents["totalSize"]}MB total size`}</TotalSize>
+            <TotalMemory>{`${headerContents["useMemory"]}MB / ${headerContents["totalSize"]}MB in use`}</TotalMemory>
           </RightWrapper>
         </ContentHead>
         <WorkContainer>
@@ -107,7 +107,7 @@ export default function ContainerMonitor({ userId, curPage }) {
             <SearchBox>
               <IconContext.Provider
                 value={{
-                  size: '25px',
+                  size: "25px",
                 }}
               >
                 <BiSearchAlt2 />
@@ -115,7 +115,7 @@ export default function ContainerMonitor({ userId, curPage }) {
               <InputBox
                 value={searchWord}
                 onChange={(e) => {
-                  setSearchWord(e.target.value)
+                  setSearchWord(e.target.value);
                 }}
               ></InputBox>
             </SearchBox>
@@ -126,9 +126,9 @@ export default function ContainerMonitor({ userId, curPage }) {
                 <Status>
                   <StatusCheck
                     type="radio"
-                    checked={filterCheck === 'all'}
+                    checked={filterCheck === "all"}
                     onClick={() => {
-                      setFilterCheck('all')
+                      setFilterCheck("all");
                     }}
                   />
                   All
@@ -136,9 +136,9 @@ export default function ContainerMonitor({ userId, curPage }) {
                 <Status>
                   <StatusCheck
                     type="radio"
-                    checked={filterCheck === 'alive'}
+                    checked={filterCheck === "alive"}
                     onClick={() => {
-                      setFilterCheck('alive')
+                      setFilterCheck("alive");
                     }}
                   />
                   Alive
@@ -146,9 +146,9 @@ export default function ContainerMonitor({ userId, curPage }) {
                 <Status>
                   <StatusCheck
                     type="radio"
-                    checked={filterCheck === 'dead'}
+                    checked={filterCheck === "dead"}
                     onClick={() => {
-                      setFilterCheck('dead')
+                      setFilterCheck("dead");
                     }}
                   />
                   Dead
@@ -164,14 +164,14 @@ export default function ContainerMonitor({ userId, curPage }) {
                       containersToDelete,
                       setCurContainers,
                       setLoadingToGetCont,
-                      setErrorToGetCont,
-                    )
+                      setErrorToGetCont
+                    );
                   }}
                 >
                   <BiTrash
                     style={{
-                      marginRight: '5px',
-                      fontSize: '20px',
+                      marginRight: "5px",
+                      fontSize: "20px",
                     }}
                   />
                   <span>Delete</span>
@@ -179,8 +179,8 @@ export default function ContainerMonitor({ userId, curPage }) {
                 <PauseButton>
                   <BiPause
                     style={{
-                      marginRight: '5px',
-                      fontSize: '20px',
+                      marginRight: "5px",
+                      fontSize: "20px",
                     }}
                   />
                   <span>Pause</span>
@@ -191,7 +191,7 @@ export default function ContainerMonitor({ userId, curPage }) {
           <MainContainer>
             {/**{curContainers.map((comp) => {
               return <ContainerBlock comp={comp} />
-            })}*/}{' '}
+            })}*/}{" "}
             {loadingToGetCont ? (
               <LoadingPage />
             ) : (
@@ -209,20 +209,20 @@ export default function ContainerMonitor({ userId, curPage }) {
         </WorkContainer>
       </ContentsContainer>
     </Wrapper>
-  )
+  );
 }
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 700px;
-`
+`;
 const ContentsContainer = styled.div`
   width: 100%;
   height: 450px;
   border: 1px solid lightgrey;
   z-index: 1;
-`
+`;
 const ContentHead = styled.div`
   display: flex;
   justify-items: column;
@@ -231,25 +231,25 @@ const ContentHead = styled.div`
   border: 1px solid lightgrey;
   padding-left: 15px;
   z-index: 3;
-`
+`;
 
 const CurrentSide = styled.h1`
   display: inline;
   font-size: 20px;
   font-weight: 500;
-`
+`;
 const headerRight = styled.p`
   display: inline;
   position: relative;
   top: -5px;
   margin-right: 20px;
-`
+`;
 
 const RightWrapper = styled.p`
   display: inline-block;
   position: absolute;
   right: 0;
-`
+`;
 
 const ReloadButton = styled.button`
   display: inline-block;
@@ -261,17 +261,17 @@ const ReloadButton = styled.button`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const LastRefresh = styled(headerRight)`
   display: inline;
-`
+`;
 const TotalSize = styled(headerRight)`
   display: inline;
-`
+`;
 const TotalMemory = styled(headerRight)`
   display: inline;
-`
+`;
 
 const SearchBox = styled.div`
   display: inline-flex;
@@ -279,7 +279,7 @@ const SearchBox = styled.div`
   align-items: center;
   border: 1px solid lightgrey;
   padding-left: 10px;
-`
+`;
 
 const InputBox = styled.input`
   display: inline-block;
@@ -287,20 +287,20 @@ const InputBox = styled.input`
   height: 25px;
   font-size: 15px;
   border: 0px solid lightgrey;
-`
+`;
 
 const WorkContainer = styled.div`
   height: 90%;
   padding: 20px;
   border: 1px solid lightgrey;
   z-index: 1;
-`
-const ButtonBox = styled.div``
+`;
+const ButtonBox = styled.div``;
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   height: 50px;
-`
+`;
 const categoryBox = styled.div`
   display: inline-block;
   color: grey;
@@ -312,7 +312,7 @@ const categoryBox = styled.div`
   font-weight: 700;
   width: 100px;
   height: 35px;
-`
+`;
 
 const FilterBox = styled(categoryBox)`
   ul {
@@ -338,12 +338,12 @@ const FilterBox = styled(categoryBox)`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 const StatusCheck = styled.input`
   height: 10px;
   width: 10px;
   margin-right: 10px;
-`
+`;
 
 const Status = styled.li`
   display: flex;
@@ -356,7 +356,7 @@ const Status = styled.li`
   &:hover {
     background-color: rgb(200, 200, 200);
   }
-`
+`;
 
 // container 대상 작업 들어갈 공간(아직 미정)
 const WorkBox = styled(categoryBox)`
@@ -383,7 +383,7 @@ const WorkBox = styled(categoryBox)`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 const workButton = styled.li`
   display: flex;
   flex-direction: row;
@@ -395,12 +395,12 @@ const workButton = styled.li`
   &:hover {
     background-color: rgb(200, 200, 200);
   }
-`
-const DeleteButton = styled(workButton)``
-const PauseButton = styled(workButton)``
+`;
+const DeleteButton = styled(workButton)``;
+const PauseButton = styled(workButton)``;
 
 const MainContainer = styled.table`
   //border: 1px solid lightgrey;
   height: 85%;
   width: 100%;
-` //container list 들어갈 곳
+`; //container list 들어갈 곳

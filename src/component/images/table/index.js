@@ -1,10 +1,36 @@
 import React from "react";
 import { useEffect } from "react";
-import ImageActions from "@component/images/ImageActions";
-import { IndeterminateCheckbox } from "@component/common/table";
+import ImageActions from "@component/images/imageActions";
+import { IndeterminateCheckbox } from "@component/common/table/indeterminateCheckbox";
 
 import { useTable, useFlexLayout, useRowSelect } from "react-table";
 import styled from "styled-components";
+import { AiOutlineBranches } from "react-icons/ai";
+
+const tHeadStyle = (headerGroup, column) => {
+  return {
+    style: {
+      border: 0,
+      background: "rgb(240, 240, 240)",
+      color: "black",
+      fontWeight: "bold",
+      textAlign: "center",
+      position: `${
+        headerGroup.headers.indexOf(column) === 0 ||
+        headerGroup.headers.indexOf(column) === 1
+          ? "sticky"
+          : "static"
+      }`,
+      zIndex: `${
+        headerGroup.headers.indexOf(column) === 0 ||
+        headerGroup.headers.indexOf(column) === 1
+          ? "3"
+          : "none"
+      }`,
+      left: headerGroup.headers.indexOf(column) === 1 ? 35 : 0,
+    },
+  };
+};
 
 export default function ImageTable(props) {
   const { columns, data, setImagesToDelete } = props;
@@ -49,6 +75,7 @@ export default function ImageTable(props) {
         maxWidth: 80,
         Header: () => <div>{"Actions"}</div>,
         Cell: ({ row }) => {
+          console.log(row);
           return (
             <div>
               <ImageActions imageId={row.original.imageId} />
@@ -87,40 +114,24 @@ export default function ImageTable(props) {
                 },
               })}
             >
-              {headerGroup.headers.map((column) => (
-                <Thead
-                  {...column.getHeaderProps({
-                    style: {
-                      border: 0,
-                      background: "rgb(240, 240, 240)",
-                      color: "black",
-                      fontWeight: "bold",
-                      textAlign: "center",
-                      position: `${
-                        headerGroup.headers.indexOf(column) === 0 ||
-                        headerGroup.headers.indexOf(column) === 1
-                          ? "sticky"
-                          : "static"
-                      }`,
-                      zIndex: `${
-                        headerGroup.headers.indexOf(column) === 0 ||
-                        headerGroup.headers.indexOf(column) === 1
-                          ? "3"
-                          : "none"
-                      }`,
-                      left: headerGroup.headers.indexOf(column) === 1 ? 35 : 0,
-                    },
-                  })}
-                >
-                  {column.render("Header")}
-                </Thead>
-              ))}
+              {headerGroup.headers.map((column) => {
+                const columnStyle = tHeadStyle(headerGroup, column);
+                console.log(columnStyle);
+                return (
+                  <Thead
+                    {...column.getHeaderProps({
+                      style: columnStyle.style,
+                    })}
+                  >
+                    {column.render("Header")}
+                  </Thead>
+                );
+              })}
             </HeadRow>
           ))}
         </TableHead>
         <TableBody {...getTableBodyProps()}>
           {rows.map((row) => {
-            console.log(row.getRowProps);
             prepareRow(row);
             return (
               <Trow
@@ -131,8 +142,7 @@ export default function ImageTable(props) {
                     height: "50px",
                     border: 0,
                     textAlign: "center",
-                    paddingTop: "8px",
-                    borderTop: "1px solid rgba(50 , 50 , 50, 0.2)",
+                    borderTop: "1px solid rgba(50, 50, 50, 0.2)",
                     borderBottom: "1px solid rgba(50, 50, 50 ,0.2)",
                   },
                 })}
@@ -159,7 +169,7 @@ export default function ImageTable(props) {
                         backgroundColor: `${
                           row.isSelected
                             ? "rgb(240, 240, 240)"
-                            : "rgb(255,255,255)"
+                            : "rgb(255, 255, 255)"
                         }`,
                       },
                     })}
@@ -216,10 +226,6 @@ const tdth = styled.div`
   border-bottom: 1px solid black;
   border-right: 1px solid black;
 
-  ${
-    "" /* In this example we use an absolutely position resizer,
-       so this is required. */
-  }
   position: relative;
 
   :last-child {

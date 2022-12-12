@@ -7,7 +7,11 @@ export default function CliContainer({ userId, repositoryName }) {
 }
 
 const Wrapper = styled.div`
-  width: 500px;
-  height: 800px;
-  background-color: rgb(160, 160, 160);
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 700px;
+  height: 700px;
+  box-shadow: 0px 0px 5px 1px rgb(200, 200, 200);
+  background-color: white;
 `;
