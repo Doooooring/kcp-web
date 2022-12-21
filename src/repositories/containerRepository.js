@@ -42,6 +42,13 @@ class containerRepository {
       }
     }
   }
+  async getContainerHealth(containerId) {
+    const { Config } = await axios.get(
+      `${HOST_DAEMON}/containers/${containerId}/json`
+    );
+    const { Healthcheck } = Config;
+    return Healthcheck;
+  }
 }
 
 export default containerRepository;

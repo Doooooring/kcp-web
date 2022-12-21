@@ -15,6 +15,7 @@ import styled from "styled-components";
 
 export default function ContainerTable(props) {
   const { columns, data, setContainersToDelete } = props;
+  const [scrollMoved, setScrollMoved] = useState(false);
 
   const {
     getTableProps,
@@ -93,7 +94,16 @@ export default function ContainerTable(props) {
   }, [selectedFlatRows]);
 
   return (
-    <Wrapper>
+    <Wrapper
+      onScroll={(e) => {
+        console.log(e.target.scrollLeft);
+        if (e.target.scrollLeft !== 0) {
+          setScrollMoved(true);
+        } else {
+          setScrollMoved(false);
+        }
+      }}
+    >
       <Table
         {...getTableProps({
           style: {
@@ -118,6 +128,11 @@ export default function ContainerTable(props) {
                       background: "rgb(240, 240, 240)",
                       color: "black",
                       fontWeight: "bold",
+                      borderRight: `${
+                        headerGroup.headers.indexOf(column) === 1
+                          ? "1px solid rgba(50 , 50 , 50, 0.2)"
+                          : "0"
+                      }`,
                       position: `${
                         headerGroup.headers.indexOf(column) === 0 ||
                         headerGroup.headers.indexOf(column) === 1
@@ -166,6 +181,7 @@ export default function ContainerTable(props) {
                       style: {
                         padding: "0.5rem",
                         border: 0,
+
                         position: `${
                           row.cells.indexOf(cell) === 0 ||
                           row.cells.indexOf(cell) === 1
@@ -173,6 +189,11 @@ export default function ContainerTable(props) {
                             : "static"
                         }`,
                         left: row.cells.indexOf(cell) === 1 ? 35 : 0,
+                        borderRight: `${
+                          row.cells.indexOf(cell) === 1
+                            ? "1px solid rgba(50 , 50 , 50, 0.2)"
+                            : "0"
+                        }`,
                         zIndex: `${
                           row.cells.indexOf(cell) === 0 ? "3" : "none"
                         }`,

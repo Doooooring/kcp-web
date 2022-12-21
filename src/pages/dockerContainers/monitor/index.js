@@ -79,6 +79,10 @@ export default function ContainerMonitor({ userId, curPage }) {
   useEffect(() => {
     setLoadingToGetCont(true)
   }, [])*/
+
+  function testtest() {
+    console.log("here");
+  }
   return (
     <Wrapper>
       <ContentsContainer>

@@ -21,9 +21,6 @@ export default function Moniter({ userId }) {
     handleCurImg(defaultImages)
   }, [])*/
 
-  consoleAsync(repositoryName);
-  consoleAsync(userId);
-
   return (
     <Wrapper>
       <ContentHead>

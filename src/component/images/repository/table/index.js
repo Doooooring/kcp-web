@@ -123,7 +123,6 @@ export default function ImageRepositoryTable(props) {
         </TableHead>
         <TableBody {...getTableBodyProps()}>
           {rows.map((row) => {
-            console.log(row.getRowProps);
             prepareRow(row);
             return (
               <Trow
