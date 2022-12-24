@@ -15,7 +15,7 @@ import styled from "styled-components";
 
 export default function ContainerTable(props) {
   const { columns, data, setContainersToDelete } = props;
-  const [scrollMoved, setScrollMoved] = useState(false);
+  const [ scrollMoved, setScrollMoved ] = useState(false);
 
   const {
     getTableProps,
@@ -219,7 +219,7 @@ export default function ContainerTable(props) {
 
 const Wrapper = styled.div`
   position: relative;
-  width: 1300px;
+  width: 1150px;
   overflow: scroll;
 `;
 
